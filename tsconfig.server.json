@@ -3,7 +3,7 @@
     "extends": "./tsconfig.json",
     "compilerOptions": {
       "module": "commonjs",
-      "outDir": "dist",
+      "outDir": "dir",
       "noEmit": false
     },
     "include": ["server"]
