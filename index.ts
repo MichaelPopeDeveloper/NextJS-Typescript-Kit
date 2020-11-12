@@ -13,10 +13,11 @@ import { MainRouter } from './routes';
 import { YelpAPIController } from './Controllers/API/Yelp';
 
 import mongooseLoader from './Loaders';
+import { Mongoose } from 'mongoose';
 
 const PORT = process.env.PORT || 8080;
 
-const apiKey = process.env.YelpAPIKey || 'LLCfy5izZ6oILXdNzt4CyVRLpT13LolHPDBmLyIfI2g7ejMqI17QPAGch4RDEj_T7Syhh2wfsyHUj-wqHXm7B_gLpieYrzWoVMFpYP77pwjmSYG4tuttS34yKkSmX3Yx';
+const apiKey: string = process.env.YelpAPIKey as string;
 
 const startSever = async () => {
     const app = express();
@@ -45,6 +46,46 @@ const startSever = async () => {
     app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
 };
 
-startSever();
+class Server {
 
+    private port: number = (process.env.PORT as unknown) as number || 8080;
+    private app: express.Express;
+    private db: any;
+    private passport: passport.Authenticator;
+
+    constructor() {
+        this.app = express();
+        this.passport = passport;
+        this.config();
+    }
+
+    private config() {
+        dotenv.config();
+    }
+
+    public async server() {
+        await this.initializeDB();
+        // this.authMiddleware();
+        this.routes();
+        this.app.listen(this.port, async () => {
+            console.log('Listening on port: ', + this.port);
+        })
+    }
+
+    private authMiddleware() {
+        this.app.use(passport.initialize());
+        this.app.use(passport.session());
+    }
+
+
+    private async initializeDB() {
+        this.db = await mongooseLoader();
+    }
+
+    private routes() {
+        this.app.use('/', MainRouter);
+    }
+}
+
+new Server().server();
 
