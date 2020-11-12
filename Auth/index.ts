@@ -1,7 +1,7 @@
 import passport from 'passport';
 import LocalStrategy from 'passport-local';
 
-import User from '../Models/User';
+import User from '../Models/UserSchema';
 
 passport.use(new LocalStrategy.Strategy(
     async (username: any, password: any, done: any) => {

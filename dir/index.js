@@ -41,7 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var dotenv_1 = __importDefault(require("dotenv"));
-var User_1 = __importDefault(require("./Models/User"));
+var UserSchema_1 = __importDefault(require("./Models/UserSchema"));
 var Auth_1 = __importDefault(require("./Auth"));
 // Routes
 var routes_1 = require("./routes");
@@ -67,7 +67,7 @@ var startSever = function () { return __awaiter(void 0, void 0, void 0, function
                 db.on('error', function (error) {
                     console.log('Error: ', error);
                 });
-                bob = new User_1.default({ name: 'Bob', username: 'bob1', password: 'lol' });
+                bob = new UserSchema_1.default({ name: 'Bob', username: 'bob1', password: 'lol' });
                 bob.save()
                     .then(function (record) { return console.log('Record: ', record); });
                 app.use(Auth_1.default.initialize());
