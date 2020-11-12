@@ -13,7 +13,6 @@ import { MainRouter } from './routes';
 import { YelpAPIController } from './Controllers/API/Yelp';
 
 import mongooseLoader from './Loaders';
-import { Mongoose } from 'mongoose';
 
 const PORT = process.env.PORT || 8080;
 
