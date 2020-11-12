@@ -1,4 +1,4 @@
-import User from '../../Models/User/Index';
+import User from '../../Models/User';
 
 export class UserConrtoller {
     public static create(config: any) {

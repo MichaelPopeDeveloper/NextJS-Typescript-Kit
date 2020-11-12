@@ -4,12 +4,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserConrtoller = void 0;
-var Index_1 = __importDefault(require("../../Models/User/Index"));
+var User_1 = __importDefault(require("../../Models/User"));
 var UserConrtoller = /** @class */ (function () {
     function UserConrtoller() {
     }
     UserConrtoller.create = function (config) {
-        var user = new Index_1.default(config);
+        var user = new User_1.default(config);
         return user.save();
     };
     UserConrtoller.get = function (id) { };

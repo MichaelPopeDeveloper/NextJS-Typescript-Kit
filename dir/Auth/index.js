@@ -41,12 +41,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var passport_1 = __importDefault(require("passport"));
 var passport_local_1 = __importDefault(require("passport-local"));
-var Index_1 = __importDefault(require("../Models/User/Index"));
+var User_1 = __importDefault(require("../Models/User"));
 passport_1.default.use(new passport_local_1.default.Strategy(function (username, password, done) { return __awaiter(void 0, void 0, void 0, function () {
     var user;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, Index_1.default.findOne({ username: username, password: password }).exec()];
+            case 0: return [4 /*yield*/, User_1.default.findOne({ username: username, password: password }).exec()];
             case 1:
                 user = _a.sent();
                 if (user) {
