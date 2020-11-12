@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "server:prod": "node ./dir/index.js",
     "dev": "nodemon ./dir/index.js",
     "tsc": "tsc --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
