@@ -12,7 +12,8 @@ import { MainRouter } from './routes';
 // Controllers
 import { YelpAPIController } from './Controllers/API/Yelp';
 
-// import mongooseLoader from './Loaders';
+import mongooseLoader from './Loaders';
+import { Console } from 'console';
 
 const PORT = process.env.PORT || 8080;
 
@@ -20,23 +21,24 @@ const apiKey: string = process.env.YelpAPIKey as string;
 
 const startSever = async () => {
 
-    try {
+
+    // DATABASE_URL=mongodb://localhost/foodme
 
 
-        const db = await mongoose.connect(process.env.DATABASE_URL as string, { useUnifiedTopology: true, useNewUrlParser: true });
+    // await mongoose.connect(process.env.DATABASE_URL as string, { useUnifiedTopology: true, useNewUrlParser: true })
+    //     .then((db) => {
+    //         db.connection.once('open', () => {
+    //             console.log('Connected to the database');
+    //         });
 
-        db.connection.once('open', () => {
-            console.log('Connected to the database');
-        });
-
-        db.connection.on('error', (error: any) => {
-            console.log('Error: ', error);
-        });
+    //         db.connection.on('error', (error: any) => {
+    //             console.log('Error: ', error);
+    //         });
+    //     })
+    //     .catch((error) => { console.log('DB: Error: ', error) })
 
 
-    } catch (error) {
-        console.log('Error: ', error);
-    }
+
     const app = express();
     dotenv.config();
     YelpAPIController.init({ apiKey });
@@ -94,7 +96,9 @@ class Server {
 
 
     private async initializeDB() {
-        this.db = await mongooseLoader();
+        this.db = await mongooseLoader()
+            .then(() => { console.log('Connected to db') })
+            .catch((error: any) => { console.log('Error: ', error) });
     }
 
     private routes() {

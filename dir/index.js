@@ -41,7 +41,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var dotenv_1 = __importDefault(require("dotenv"));
-var UserSchema_1 = __importDefault(require("./Models/UserSchema"));
 var Auth_1 = __importDefault(require("./Auth"));
 // Routes
 var routes_1 = require("./routes");
@@ -51,31 +50,20 @@ var Loaders_1 = __importDefault(require("./Loaders"));
 var PORT = process.env.PORT || 8080;
 var apiKey = process.env.YelpAPIKey;
 var startSever = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var app, db, bob;
+    var app;
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                app = express_1.default();
-                dotenv_1.default.config();
-                Yelp_1.YelpAPIController.init({ apiKey: apiKey });
-                return [4 /*yield*/, Loaders_1.default()];
-            case 1:
-                db = _a.sent();
-                db.once('open', function () {
-                    console.log('Connected to the database');
-                });
-                db.on('error', function (error) {
-                    console.log('Error: ', error);
-                });
-                bob = new UserSchema_1.default({ name: 'Bob', username: 'bob1', password: 'lol' });
-                bob.save()
-                    .then(function (record) { return console.log('Record: ', record); });
-                app.use(Auth_1.default.initialize());
-                app.use(Auth_1.default.session());
-                app.use('/', routes_1.MainRouter);
-                app.listen(PORT, function () { return console.log("Listening on port: " + PORT); });
-                return [2 /*return*/];
-        }
+        app = express_1.default();
+        dotenv_1.default.config();
+        Yelp_1.YelpAPIController.init({ apiKey: apiKey });
+        // const db = await mongooseLoader();
+        // const bob = new User({ name: 'Bob', username: 'bob1', password: 'lol' });
+        // bob.save()
+        //     .then((record) => console.log('Record: ', record));
+        app.use(Auth_1.default.initialize());
+        app.use(Auth_1.default.session());
+        app.use('/', routes_1.MainRouter);
+        app.listen(PORT, function () { return console.log("Listening on port: " + PORT); });
+        return [2 /*return*/];
     });
 }); };
 var Server = /** @class */ (function () {
@@ -120,7 +108,9 @@ var Server = /** @class */ (function () {
                 switch (_b.label) {
                     case 0:
                         _a = this;
-                        return [4 /*yield*/, Loaders_1.default()];
+                        return [4 /*yield*/, Loaders_1.default()
+                                .then(function () { console.log('Connected to db'); })
+                                .catch(function (error) { console.log('Error: ', error); })];
                     case 1:
                         _a.db = _b.sent();
                         return [2 /*return*/];
