@@ -24,22 +24,21 @@ const startSever = async () => {
     YelpAPIController.init({ apiKey });
 
     try {
-        
-    } catch (error) {
-        
-    }
-    const db = mongooseLoader();
 
-    db.then((db) => {
+    } catch (error) {
+
+    }
+    const db = await mongooseLoader();
+
+    if (db) {
         db.once('open', () => {
             console.log('Connected to the database');
         });
-    
+
         db.on('error', (error: any) => {
             console.log('Error: ', error);
         });
-    })
-    .catch((error) => console.log('Error: ', error))
+    }
 
 
 
