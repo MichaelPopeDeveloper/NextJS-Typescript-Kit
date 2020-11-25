@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node ./dir/index.js",
     "server:prod": "node ./dir/index.js",
     "dev": "nodemon ./dir/index.js",
     "tsc": "tsc --watch",
