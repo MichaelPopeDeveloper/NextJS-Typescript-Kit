@@ -22,20 +22,31 @@ const startSever = async () => {
     const app = express();
     dotenv.config();
     YelpAPIController.init({ apiKey });
-    const db = await mongooseLoader();
 
-    db.once('open', () => {
-        console.log('Connected to the database');
-    });
+    try {
+        
+    } catch (error) {
+        
+    }
+    const db = mongooseLoader();
 
-    db.on('error', (error: any) => {
-        console.log('Error: ', error);
-    });
+    db.then((db) => {
+        db.once('open', () => {
+            console.log('Connected to the database');
+        });
+    
+        db.on('error', (error: any) => {
+            console.log('Error: ', error);
+        });
+    })
+    .catch((error) => console.log('Error: ', error))
 
-    const bob = new User({ name: 'Bob', username: 'bob1', password: 'lol' });
 
-    bob.save()
-        .then((record) => console.log('Record: ', record));
+
+    // const bob = new User({ name: 'Bob', username: 'bob1', password: 'lol' });
+
+    // bob.save()
+    //     .then((record) => console.log('Record: ', record));
 
     app.use(passport.initialize());
     app.use(passport.session());
