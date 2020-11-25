@@ -1,6 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
-
+import mongoose from 'mongoose';
 import User from './Models/UserSchema';
 
 import passport from './Auth';
@@ -12,33 +12,39 @@ import { MainRouter } from './routes';
 // Controllers
 import { YelpAPIController } from './Controllers/API/Yelp';
 
-import mongooseLoader from './Loaders';
+// import mongooseLoader from './Loaders';
 
 const PORT = process.env.PORT || 8080;
 
 const apiKey: string = process.env.YelpAPIKey as string;
 
 const startSever = async () => {
+
+    try {
+
+
+        const db = await mongoose.connect(process.env.DATABASE_URL as string, { useUnifiedTopology: true, useNewUrlParser: true });
+
+        db.connection.once('open', () => {
+            console.log('Connected to the database');
+        });
+
+        db.connection.on('error', (error: any) => {
+            console.log('Error: ', error);
+        });
+
+
+    } catch (error) {
+        console.log('Error: ', error);
+    }
     const app = express();
     dotenv.config();
     YelpAPIController.init({ apiKey });
 
-    try {
 
-    } catch (error) {
+    // const db = await mongooseLoader();
 
-    }
-    const db = await mongooseLoader();
 
-    if (db) {
-        db.once('open', () => {
-            console.log('Connected to the database');
-        });
-
-        db.on('error', (error: any) => {
-            console.log('Error: ', error);
-        });
-    }
 
 
 
