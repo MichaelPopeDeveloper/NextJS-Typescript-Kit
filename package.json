@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./dir/index.js",
-    "server:prod": "node ./dir/index.js",
-    "dev": "nodemon ./dir/index.js",
+    "dev": "nodemon --exec ts-node --project tsconfig.server.json server/index.ts",
+    "build:server": "tsc --project tsconfig.server.json",
+    "build:next": "next build",
+    "build": "npm run build:next && npm run build:server",
+    "start": "next start -p 80",
     "tsc": "tsc --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -22,11 +24,13 @@
     "@types/node": "^14.14.6",
     "@types/passport": "^1.0.4",
     "@types/passport-local": "^1.0.33",
+    "@types/react": "^17.0.0",
     "@typescript-eslint/eslint-plugin": "^4.6.1",
     "eslint": "^7.13.0",
     "eslint-config-airbnb-typescript": "^12.0.0",
     "eslint-plugin-import": "^2.22.1",
     "nodemon": "^2.0.6",
+    "ts-node": "^9.0.0",
     "typescript": "^4.0.5"
   },
   "dependencies": {
@@ -36,6 +40,9 @@
     "express": "^4.17.1",
     "mongoose": "^5.10.13",
     "passport": "^0.4.1",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "next": "10.0.3",
+    "react": "17.0.1",
+    "react-dom": "17.0.1"
   }
 }

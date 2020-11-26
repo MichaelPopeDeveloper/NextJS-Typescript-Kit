@@ -39,75 +39,60 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = __importDefault(require("express"));
-var dotenv_1 = __importDefault(require("dotenv"));
-var next_1 = __importDefault(require("next"));
-var Auth_1 = __importDefault(require("./Auth"));
-var Loaders_1 = __importDefault(require("./Loaders"));
-var PORT = process.env.PORT || 8080;
-var apiKey = process.env.YelpAPIKey;
-var Server = /** @class */ (function () {
-    function Server() {
-        this.port = process.env.PORT || 8080;
-        this.dev = process.env.NODE_ENV !== "production";
-        this.app = next_1.default({ dev: this.dev });
-        this.handle = this.app.getRequestHandler();
-        this.passport = Auth_1.default;
-        this.config();
+exports.YelpAPIController = void 0;
+var axios_1 = __importDefault(require("axios"));
+var YelpAPIController = /** @class */ (function () {
+    function YelpAPIController() {
     }
-    Server.prototype.config = function () {
-        dotenv_1.default.config();
+    YelpAPIController.init = function (_a) {
+        var apiKey = _a.apiKey;
+        YelpAPIController.apiKey = apiKey;
     };
-    Server.prototype.startServer = function () {
+    YelpAPIController.search = function (search, location) {
         return __awaiter(this, void 0, void 0, function () {
-            var _this = this;
+            var businesses;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.initializeDB()];
+                    case 0: return [4 /*yield*/, axios_1.default.get(YelpAPIController.yelpAPIURL + "/businesses/search?location=" + location + "&term=" + search, {
+                            headers: {
+                                Authorization: "Bearer " + YelpAPIController.apiKey
+                            }
+                        })
+                            .then(function (_a) {
+                            var data = _a.data;
+                            return data;
+                        })
+                            .catch(function (err) { return console.log(err.response.data); })];
                     case 1:
-                        _a.sent();
-                        this.app.prepare()
-                            .then(function () {
-                            _this._server = express_1.default();
-                            _this.routes();
-                            _this._server.listen(_this.port, function () { return __awaiter(_this, void 0, void 0, function () {
-                                return __generator(this, function (_a) {
-                                    console.log('Listening on port: ', +this.port);
-                                    return [2 /*return*/];
-                                });
-                            }); });
-                        });
-                        return [2 /*return*/];
+                        businesses = _a.sent();
+                        return [2 /*return*/, businesses];
                 }
             });
         });
     };
-    Server.prototype.authMiddleware = function () {
-        this.app.use(Auth_1.default.initialize());
-        this.app.use(Auth_1.default.session());
-    };
-    Server.prototype.initializeDB = function () {
+    YelpAPIController.reviews = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        _a = this;
-                        return [4 /*yield*/, Loaders_1.default()
-                                .then(function () { console.log('Connected to db'); })
-                                .catch(function (error) { console.log('Error: ', error); })];
+            var businesses;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, axios_1.default.get(YelpAPIController.yelpAPIURL + "/businesses/" + id + "/reviews", {
+                            headers: {
+                                Authorization: "Bearer " + YelpAPIController.apiKey
+                            }
+                        })
+                            .then(function (_a) {
+                            var data = _a.data;
+                            return data;
+                        })
+                            .catch(function (err) { return console.log(err.response.data); })];
                     case 1:
-                        _a.db = _b.sent();
-                        return [2 /*return*/];
+                        businesses = _a.sent();
+                        return [2 /*return*/, businesses];
                 }
             });
         });
     };
-    Server.prototype.routes = function () {
-        var _this = this;
-        //  this._server.use('/', MainRouter);
-        this._server.get('*', function (req, res) { return _this.handle(req, res); });
-    };
-    return Server;
+    YelpAPIController.yelpAPIURL = 'https://api.yelp.com/v3';
+    return YelpAPIController;
 }());
-new Server().startServer();
+exports.YelpAPIController = YelpAPIController;
